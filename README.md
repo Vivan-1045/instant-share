@@ -1,4 +1,4 @@
-# 🚀 Instant Share W
+# 🚀 Instant Share 
 
 **Secure, anonymous, real-time file sharing — no login needed.**  
 Built with **React**, **Node.js**, **WebSocket**, **Express**, and **CryptoJS**.
