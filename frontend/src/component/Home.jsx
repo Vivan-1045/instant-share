@@ -15,30 +15,34 @@ function App() {
 
   // Handle API request to generate a shareable link
   const generateShareableLink = async () => {
-    if (files.length==0) {
+    if (files.length == 0) {
       alert("Select atleast one file.");
       return;
     }
     try {
       const formData = new FormData();
-  
+
       // Make sure files are appended correctly
       files.forEach((file) => {
         formData.append("files", file);
       });
-  
+
       // Send POST request to backend
-      const response = await axios.post("http://localhost:9000/generateLink", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-  
+      const response = await axios.post(
+        "http://localhost:9000/generateLink",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
       const { linkId, expirationTime } = response.data;
       setShareableLink(`http://localhost:9000/${linkId}`);
       setExpirationTime(new Date(expirationTime));
-  
+
       // Check expiration time
       const interval = setInterval(() => {
-        if (Date.now() > expirationTime) {
+        if (new Date() > expirationTime) {
           setIsLinkExpired(true);
           clearInterval(interval);
         }
@@ -48,8 +52,6 @@ function App() {
     }
   };
 
-  
-
   return (
     <div>
       <h1>Instant Share the files</h1>
@@ -57,10 +59,9 @@ function App() {
       <div>
         <h2>Select files to send</h2>
         <input type="file" multiple onChange={handleFileSelect} />
-      {/* </div> */}
-
-      {/* <div> */}
-        <button onClick={generateShareableLink}>Generate Shareable Link & QR Code</button>
+        <button onClick={generateShareableLink}>
+          Generate Shareable Link & QR Code
+        </button>
       </div>
 
       {shareableLink && (
@@ -74,7 +75,9 @@ function App() {
             <QRCode value={shareableLink} />
           </div>
 
-          {isLinkExpired && <p style={{ color: "red" }}>This link has expired.</p>}
+          {isLinkExpired && (
+            <p style={{ color: "red" }}>This link has expired.</p>
+          )}
           <p>Link expires at: {expirationTime?.toLocaleTimeString()}</p>
         </div>
       )}
@@ -83,8 +86,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
