@@ -1,12 +1,16 @@
+import {useUrlShortener} from "./ShortUrl"
 import React, { useState } from "react";
 import axios from "axios";
 import QRCode from "react-qr-code";
+import "../styles/styles.css";
 
 function App() {
   const [files, setFiles] = useState([]);
   const [shareableLink, setShareableLink] = useState("");
   const [expirationTime, setExpirationTime] = useState(null);
   const [isLinkExpired, setIsLinkExpired] = useState(false);
+
+  const { shortenUrl, loading, error } = useUrlShortener();
 
   // Handle file selection
   const handleFileSelect = (e) => {
@@ -37,7 +41,13 @@ function App() {
       );
 
       const { linkId, expirationTime } = response.data;
-      setShareableLink(`http://localhost:9000/${linkId}`);
+
+      const longUrl = `http://localhost:9000/${linkId}`;
+
+      //Short the URL before sharing it
+      const shortUrl = await shortenUrl(longUrl)
+
+      setShareableLink(shortUrl);
       setExpirationTime(new Date(expirationTime));
 
       // Check expiration time
@@ -53,34 +63,48 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>Instant Share the files</h1>
+    <div className="container">
+      <h1>Instant Share the Files</h1>
+      <div className="main-layout">
+        <div className="left-pane">
+          <h2>Select files to send</h2>
+          <input  type="file" className= {files.length>0 ? "is_files" : ""}  multiple onChange={handleFileSelect} />
+          <button onClick={generateShareableLink}>
+            Generate Shareable Link & QR Code
+          </button>
 
-      <div>
-        <h2>Select files to send</h2>
-        <input type="file" multiple onChange={handleFileSelect} />
-        <button onClick={generateShareableLink}>
-          Generate Shareable Link & QR Code
-        </button>
-      </div>
-
-      {shareableLink && (
-        <div>
-          <h3>Share this link:</h3>
-          <a href={shareableLink} target="_blank" rel="noopener noreferrer">
-            {shareableLink}
-          </a>
-
-          <div>
-            <QRCode value={shareableLink} />
-          </div>
-
-          {isLinkExpired && (
-            <p style={{ color: "red" }}>This link has expired.</p>
-          )}
-          <p>Link expires at: {expirationTime?.toLocaleTimeString()}</p>
+          {/* {files.length > 0 && (
+        <div className="file-list">
+          <h4>Selected files:</h4>
+          <ul>
+            {files.map((file, index) => (
+              <li key={index}>{file.name}</li>
+            ))}
+          </ul>
         </div>
-      )}
+      )} */}
+        </div>
+
+        {shareableLink && (
+          <div className="right-pane">
+            <div className="qr-code-box">
+              <QRCode value={shareableLink} size={150} />
+            </div>
+            <div className="link-info">
+              <h3>Share this link:</h3>
+              <a href={shareableLink} target="_blank" rel="noopener noreferrer">
+                {shareableLink}
+              </a>
+              {isLinkExpired && (
+                <p className="expired-message">This link has expired.</p>
+              )}
+              <p className="expiration-time">
+                Link expires at: {expirationTime?.toLocaleTimeString()}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
