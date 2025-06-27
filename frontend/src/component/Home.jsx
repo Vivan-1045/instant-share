@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import "../styles/styles.css";
+const apiBase = import.meta.env.VITE_API_URL;
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -33,7 +34,7 @@ function App() {
 
       // Send POST request to backend
       const response = await axios.post(
-        "http://localhost:9000/generateLink",
+        `${apiBase}/generateLink`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -42,7 +43,7 @@ function App() {
 
       const { linkId, expirationTime } = response.data;
 
-      const longUrl = `http://localhost:9000/${linkId}`;
+      const longUrl = `${apiBase}/${linkId}`;
 
       //Short the URL before sharing it
       const shortUrl = await shortenUrl(longUrl)
@@ -64,7 +65,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Instant Share the Files</h1>
+      <h1>Drop. Share. Done.</h1>
       <div className="main-layout">
         <div className="left-pane">
           <h2>Select files to send</h2>
