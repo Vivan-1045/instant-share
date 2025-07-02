@@ -31,12 +31,16 @@ Built with **React**, **Node.js**, **WebSocket**, **Express**, and **CryptoJS**.
 ## 🖥️ Installation
 
 ```bash
-# Clone the repo
-git clone https://github.com/yourusername/instant-share-w.git
-cd instant-share-w
+# Clone the repository
+git clone https://github.com/Vivan-1045/instant-share.git
+cd instant-share
 
-# Install dependencies
+# Install backend dependencies
+cd server
 npm install
+npm start   # Starts the backend
 
-# Start the development server
-npm run dev
+# Open a new terminal for frontend
+cd ../frontend
+npm install
+npm run dev  # Starts the frontend on localhost
