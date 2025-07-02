@@ -3,6 +3,7 @@
 **Secure, anonymous, real-time file sharing — no login needed.**  
 Built with **React**, **Node.js**, **WebSocket**, **Express**, and **CryptoJS**.
 
+🔗[live here⬇️](https://instant-share-black.vercel.app/)
 ---
 
 ## 🔧 Features
