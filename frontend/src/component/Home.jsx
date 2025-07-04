@@ -1,5 +1,5 @@
-import {useUrlShortener} from "./ShortUrl"
-import React, { useState } from "react";
+import { useUrlShortener } from "./ShortUrl";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import "../styles/styles.css";
@@ -32,36 +32,39 @@ function App() {
         formData.append("files", file);
       });
 
-      // Send POST request to backend
-      const response = await axios.post(
-        `${apiBase}/generateLink`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      // Send POST request to server
+      const response = await axios.post(`${apiBase}/generateLink`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const { linkId, expirationTime } = response.data;
 
       const longUrl = `${apiBase}/${linkId}`;
 
       //Short the URL before sharing it
-      const shortUrl = await shortenUrl(longUrl)
+      const shortUrl = await shortenUrl(longUrl);
 
       setShareableLink(shortUrl);
-      setExpirationTime(new Date(expirationTime));
-
-      // Check expiration time
-      const interval = setInterval(() => {
-        if (new Date() > expirationTime) {
-          setIsLinkExpired(true);
-          clearInterval(interval);
-        }
-      }, 1000);
+      setExpirationTime(new Date(expirationTime)); // Triggers useEffect
     } catch (error) {
       console.error("Error generating shareable link:", error);
     }
   };
+
+  //it manages expiration time
+  useEffect(() => {
+    if (!expirationTime) return;
+
+    setIsLinkExpired(false);
+    const interval = setInterval(() => {
+      if (new Date() > expirationTime) {
+        setIsLinkExpired(true);
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [expirationTime]);
 
   return (
     <div className="container">
@@ -69,9 +72,14 @@ function App() {
       <div className="main-layout">
         <div className="left-pane">
           <h2>Select files to send</h2>
-          <input  type="file" className= {files.length>0 ? "is_files" : ""}  multiple onChange={handleFileSelect} />
+          <input
+            type="file"
+            className={files.length > 0 ? "is_files" : ""}
+            multiple
+            onChange={handleFileSelect}
+          />
           <button onClick={generateShareableLink}>
-            Generate Shareable Link & QR Code
+            Generate Link & QR Code
           </button>
 
           {/* {files.length > 0 && (
