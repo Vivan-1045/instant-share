@@ -33,6 +33,7 @@ function App() {
       });
 
       // Send POST request to server
+      console.log(apiBase)
       const response = await axios.post(`${apiBase}/generateLink`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
