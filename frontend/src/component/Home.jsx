@@ -31,6 +31,7 @@ function App() {
       if (response.data.isEncrypted) {
         setIsEncrypted(true);
         setShowDecryptModal(true);
+        setOriginalLink(link);
       } else {
         window.location.href = link;
       }
@@ -121,7 +122,7 @@ function App() {
         {shareableLink && (
           <div className="right-pane">
             <div className="qr-code-box">
-              <QRCode value={originalLink} size={150} />
+              <QRCode value={shareableLink} size={150} />
             </div>
             <div className="link-info">
               <h3>Share this link:</h3>
