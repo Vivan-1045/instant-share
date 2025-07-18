@@ -121,7 +121,7 @@ function App() {
         {shareableLink && (
           <div className="right-pane">
             <div className="qr-code-box">
-              <QRCode value={shareableLink} size={150} />
+              <QRCode value={originalLink} size={150} />
             </div>
             <div className="link-info">
               <h3>Share this link:</h3>
