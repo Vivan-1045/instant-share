@@ -4,6 +4,7 @@ import axios from "axios";
 import QRCode from "react-qr-code";
 import "../styles/styles.css";
 const apiBase = import.meta.env.VITE_API_URL;
+import DecryptFile from "./DecryptFile";
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -11,44 +12,67 @@ function App() {
   const [expirationTime, setExpirationTime] = useState(null);
   const [isLinkExpired, setIsLinkExpired] = useState(false);
 
+  
+  const [password, setPassword] = useState("");
+  const [isEncrypted, setIsEncrypted] = useState(false);
+  const [showDecryptModal, setShowDecryptModal] = useState(false);
+  const [originalLink, setOriginalLink] = useState("");
+
   const { shortenUrl, loading, error } = useUrlShortener();
 
-  // Handle file selection
   const handleFileSelect = (e) => {
     setFiles([...e.target.files]);
   };
 
-  // Handle API request to generate a shareable link
+  const handleDownloadLink = async (link) => {
+    try {
+      const response = await axios.get(link);
+
+      if (response.data.isEncrypted) {
+        setIsEncrypted(true);
+        setShowDecryptModal(true);
+      } else {
+        window.location.href = link;
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Link expired or invalid.");
+    }
+  };
+
   const generateShareableLink = async () => {
-    if (files.length == 0) {
-      alert("Select atleast one file.");
+   
+    if (files.length === 0) {
+      alert("Select at least one file.");
       return;
     }
+
     try {
       const formData = new FormData();
 
-      // Make sure files are appended correctly
       files.forEach((file) => {
         formData.append("files", file);
       });
 
-      // Send POST request to server
-      console.log(apiBase)
+      if (password) {
+        formData.append("password", password);
+      }
+
       const response = await axios.post(`${apiBase}/generateLink`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      const { linkId, expirationTime } = response.data;
+      const { linkId, expirationTime, isEncrypted } = response.data;
 
       const longUrl = `${apiBase}/${linkId}`;
-
-      //Short the URL before sharing it
       const shortUrl = await shortenUrl(longUrl);
 
+      setOriginalLink(longUrl);
       setShareableLink(shortUrl);
-      setExpirationTime(new Date(expirationTime)); // Triggers useEffect
+      setExpirationTime(new Date(expirationTime));
+      setIsEncrypted(isEncrypted); 
     } catch (error) {
-      console.error("Error generating shareable link:", error);
+      alert("Failed to generate the link. Please try again.");
     }
   };
 
@@ -79,20 +103,19 @@ function App() {
             multiple
             onChange={handleFileSelect}
           />
+
+          <input
+            type="password"
+            placeholder="If Confidential, enter a password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={`password-input ${password.length > 0 ? "filled" : ""}`}
+          />
           <button onClick={generateShareableLink}>
             Generate Link & QR Code
           </button>
 
-          {/* {files.length > 0 && (
-        <div className="file-list">
-          <h4>Selected files:</h4>
-          <ul>
-            {files.map((file, index) => (
-              <li key={index}>{file.name}</li>
-            ))}
-          </ul>
-        </div>
-      )} */}
+
         </div>
 
         {shareableLink && (
@@ -102,7 +125,13 @@ function App() {
             </div>
             <div className="link-info">
               <h3>Share this link:</h3>
-              <a href={shareableLink} target="_blank" rel="noopener noreferrer">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDownloadLink(originalLink);
+                }}
+              >
                 {shareableLink}
               </a>
               {isLinkExpired && (
@@ -115,6 +144,13 @@ function App() {
           </div>
         )}
       </div>
+
+      {showDecryptModal && (
+        <DecryptFile
+          fileUrl={originalLink}
+          onClose={() => setShowDecryptModal(false)}
+        />
+      )}
     </div>
   );
 }

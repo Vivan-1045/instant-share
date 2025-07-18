@@ -85,6 +85,7 @@ h2 {
 
 /* Button */
 button {
+  margin-top: 5px;
   background-color: #40916c;
   color: #f0fdf4;
   font-weight: 700;
@@ -102,11 +103,6 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-button:hover {
-  background-color: #2d6a4f;
-  transform: scale(1.04);
-  box-shadow: 0 8px 25px rgba(45,106,79,0.5);
-}
 
 button:active {
   transform: scale(0.8);
@@ -117,7 +113,8 @@ button:focus-visible {
   outline: 3px solid #74c69d;
   outline-offset: 2px;
 }
-/* Right pane */
+
+
 .right-pane {
   flex: 1;
   min-width: 320px;
@@ -192,7 +189,6 @@ button:focus-visible {
     color: #40916c;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -209,7 +205,6 @@ button:focus-visible {
   50% { opacity: 0.6; }
 }
 
-/* Responsive: Stack vertically on narrow screens */
 @media (max-width: 720px) {
   .main-layout {
     flex-direction: column;
@@ -222,7 +217,71 @@ button:focus-visible {
     min-width: unset;
   }
 
-  button {
+  /* button {
     width: 100%;
-  }
+  } */
+}
+
+.password-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;  
+  background-color: #f4f4f4;
+  transition: box-shadow 0.3s, background-color 0.3s;
+  outline: none;
+  color: #333;           
+  caret-color: #666; 
+  margin-bottom: 5px;    
+}
+
+.password-input::placeholder {
+  color: #999;
+  font-weight: 500;
+}
+
+.password-input:focus {
+  background-color: #e4e1e1;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3); 
+}
+
+.password-input.filled {
+  background-color: #e9e1e1; 
+}
+
+
+.modal input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;         
+  background-color: #f4f4f4;
+  color: #333;                  
+  caret-color: #666;           
+  transition: box-shadow 0.3s, background-color 0.3s;
+  outline: none;
+}
+
+.modal input[type="password"]::placeholder {
+  color: #999;                 
+  font-weight: 500;           
+}
+
+.modal input[type="password"]:focus {
+  background-color: #e4e1e1;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+}
+
+.modal input[type="password"].filled {
+  background-color: #e9e1e1;   
+}
+
+.modal button[class="downloadButton"] {
+  margin-right:5px;
+}
+
+.modal button[class="cancelButton"] {
+  margin-left:5px;
 }
