@@ -42,7 +42,7 @@ app.post("/generateLink", upload.array("files"), (req, res) => {
   const expirationTime = Date.now() + 2 * 60 * 1000;
   const password = req.body.password || null;
 
-  // Store metadata for cleanup after expiration
+  // Store only file metadata, not zip
   fileTransfers[linkId] = {
     files: files.map((f) => ({
       path: f.path,
@@ -52,7 +52,7 @@ app.post("/generateLink", upload.array("files"), (req, res) => {
     expirationTime,
   };
 
-  // Set timer to remove expired data
+  // Cleanup
   setTimeout(() => {
     const data = fileTransfers[linkId];
     if (data) {
@@ -60,7 +60,8 @@ app.post("/generateLink", upload.array("files"), (req, res) => {
       delete fileTransfers[linkId];
     }
   }, 2 * 60 * 1000);
-  res.json({ linkId, expirationTime ,isEncrypted: !!password });
+
+  res.json({ linkId, expirationTime, isEncrypted: !!password });
 });
 
 // API route to handle request when any user scan the qr or click the link
@@ -73,16 +74,22 @@ app.get("/:linkId", (req, res) => {
   }
 
   if (fileTransfer.password) {
-  return res.json({ linkId, expirationTime:fileTransfer.expirationTime, isEncrypted: true });
-}
+    return res.json({
+      linkId,
+      expirationTime: fileTransfer.expirationTime,
+      isEncrypted: true,
+    });
+  }
 
-  // if no password go with normal download 
-  const archive = archiver("zip", { store: true });
+  // Stream files as zip directly (no disk storage of zip)
   res.attachment("files.zip");
+  const archive = archiver("zip", { store: true });
   archive.pipe(res);
+
   fileTransfer.files.forEach((f) => {
     archive.file(f.path, { name: f.name });
   });
+
   archive.finalize();
 });
 
@@ -98,16 +105,20 @@ app.post("/secureDownload", (req, res) => {
     return res.status(403).json({ error: "Incorrect password" });
   }
 
-  // Create the zip archive
+  // Stream zip, then encrypt, then send to client
   const archive = archiver("zip", { store: true });
+  const chunks = [];
 
-  const tempBuffers = [];
-  archive.on("data", (chunk) => tempBuffers.push(chunk));
+  archive.on("data", (chunk) => chunks.push(chunk));
 
   archive.on("end", () => {
-    const zipBuffer = Buffer.concat(tempBuffers);
-    res.setHeader("Content-Disposition", "attachment; filename=files.zip");
-    res.send(zipBuffer); 
+    const zipBuffer = Buffer.concat(chunks);
+
+    // Encrypt the zip buffer before sending
+    const encryptedBuffer = encryptBuffer(zipBuffer, password);
+
+    res.setHeader("Content-Disposition", "attachment; filename=files.enc");
+    res.send(encryptedBuffer);
   });
 
   fileTransfer.files.forEach((f) => {
