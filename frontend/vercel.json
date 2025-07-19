@@ -1,12 +1,7 @@
 {
   "rewrites": [
-    {
-      "source": "/download/:linkId",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/download/:linkId", "destination": "/" },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
+
