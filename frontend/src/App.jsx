@@ -11,7 +11,7 @@
 
 // export default App
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter  as Router, Routes, Route } from "react-router-dom";
 import DownloadPage from "./component/GlobalDownload";
 import Home from "./component/Home"; 
 
