@@ -12,7 +12,6 @@ function App() {
   const [expirationTime, setExpirationTime] = useState(null);
   const [isLinkExpired, setIsLinkExpired] = useState(false);
 
-  
   const [password, setPassword] = useState("");
   const [isEncrypted, setIsEncrypted] = useState(false);
   const [showDecryptModal, setShowDecryptModal] = useState(false);
@@ -24,25 +23,24 @@ function App() {
     setFiles([...e.target.files]);
   };
 
-  const handleDownloadLink = async (link) => {
-    try {
-      const response = await axios.get(link);
+  // const handleDownloadLink = async (link) => {
+  //   try {
+  //     const response = await axios.get(link);
 
-      if (response.data.isEncrypted) {
-        setIsEncrypted(true);
-        setShowDecryptModal(true);
-        setOriginalLink(link);
-      } else {
-        window.location.href = link;
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Link expired or invalid.");
-    }
-  };
+  //     if (response.data.isEncrypted) {
+  //       setIsEncrypted(true);
+  //       setShowDecryptModal(true);
+  //       setOriginalLink(link);
+  //     } else {
+  //       window.location.href = link;
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Link expired or invalid.");
+  //   }
+  // };
 
   const generateShareableLink = async () => {
-   
     if (files.length === 0) {
       alert("Select at least one file.");
       return;
@@ -65,13 +63,14 @@ function App() {
 
       const { linkId, expirationTime, isEncrypted } = response.data;
 
-      const longUrl = `${apiBase}/${linkId}`;
+      // const longUrl = `${apiBase}/${linkId}`;
+      const longUrl = `https://instant-share.vercel.app/download/${linkId}`;
       const shortUrl = await shortenUrl(longUrl);
 
       setOriginalLink(longUrl);
       setShareableLink(shortUrl);
       setExpirationTime(new Date(expirationTime));
-      setIsEncrypted(isEncrypted); 
+      setIsEncrypted(isEncrypted);
     } catch (error) {
       alert("Failed to generate the link. Please try again.");
     }
@@ -115,8 +114,6 @@ function App() {
           <button onClick={generateShareableLink}>
             Generate Link & QR Code
           </button>
-
-
         </div>
 
         {shareableLink && (
@@ -126,7 +123,7 @@ function App() {
             </div>
             <div className="link-info">
               <h3>Share this link:</h3>
-              <a
+              {/* <a
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
@@ -134,7 +131,17 @@ function App() {
                 }}
               >
                 {shareableLink}
+              </a> */}
+
+              <a
+                href={`/download/${originalLink.split("/").pop()}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {shareableLink}
               </a>
+
+              
               {isLinkExpired && (
                 <p className="expired-message">This link has expired.</p>
               )}
@@ -146,12 +153,12 @@ function App() {
         )}
       </div>
 
-      {showDecryptModal && (
+      {/* {showDecryptModal && (
         <DecryptFile
           fileUrl={originalLink}
           onClose={() => setShowDecryptModal(false)}
         />
-      )}
+      )} */}
     </div>
   );
 }
