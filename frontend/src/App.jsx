@@ -11,18 +11,18 @@
 
 // export default App
 
-import { HashRouter  as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import DownloadPage from "./component/GlobalDownload";
 import Home from "./component/Home"; 
 
 function App() {
   return (
-    <Router>
+    
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/download/:linkId" element={<DownloadPage />} />
       </Routes>
-    </Router>
+    
   );
 }
 
