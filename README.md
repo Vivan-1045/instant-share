@@ -23,7 +23,7 @@ Built with **React**, **Node.js**, **WebSocket**, **Express**, and **CryptoJS**.
 | React       | Frontend UI     |
 | Node.js     | Backend runtime |
 | Express     | Web server API  |
-| WebSocket   | Real-time comms |
+| WebSocket   | Real-time comm. |
 | CryptoJS    | File encryption |
 
 ---
