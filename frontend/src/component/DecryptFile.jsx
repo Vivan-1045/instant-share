@@ -13,20 +13,54 @@ const DecryptFile = ({ fileUrl, onClose }) => {
 
       const linkId = fileUrl.split("/").pop();
 
-      const response = await axios.post(`${apiBase}/secureDownload`, {
-        linkId,
-        password,
-      }, {
-        responseType: "blob",
+      const response = await axios.post(
+        `${apiBase}/secureDownload`,
+        {
+          linkId,
+          password,
+        },
+        {
+          responseType: "arraybuffer",
+        }
+      );
+
+      const encryptedData = new Uint8Array(response.data);
+
+      const iv = encryptedData.slice(0, 16);
+      const ciphertext = encryptedData.slice(16);
+
+      // Getting AES-256 key from password using SHA-256
+      const encoder = new TextEncoder();
+      const passwordBytes = encoder.encode(password);
+      const keyBuffer = await crypto.subtle.digest("SHA-256", passwordBytes);
+
+      const cryptoKey = await crypto.subtle.importKey(
+        "raw",
+        keyBuffer,
+        { name: "AES-CBC" },
+        false,
+        ["decrypt"]
+      );
+
+      // Decrypt
+      const decryptedArrayBuffer = await crypto.subtle.decrypt(
+        { name: "AES-CBC", iv: iv },
+        cryptoKey,
+        ciphertext
+      );
+
+      const blob = new Blob([decryptedArrayBuffer], {
+        type: "application/zip",
       });
 
-      const blob = new Blob([response.data]);
+      // Download Section
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "files.zip";
       a.click();
 
+      window.URL.revokeObjectURL(url);
       setLoading(false);
       onClose();
     } catch (err) {
@@ -51,19 +85,31 @@ const DecryptFile = ({ fileUrl, onClose }) => {
   };
 
   return (
-    <div className="modal">
-      <h3>Enter Password to Download</h3>
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button className="downloadButton" onClick={downloadEncryptedFile} disabled={loading}>
-        {loading ? "Downloading..." : "Download"}
-      </button>
-      <button className="cancelButton" onClick={onClose}>Cancel</button>
-    </div>
+    <>
+      <div className="modal">
+        <h3>Enter Password to Download</h3>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={`password-input ${password ? "filled" : ""}`
+          }
+        />
+      </div>
+      <div className="button-group">
+        <button
+          className="downloadButton"
+          onClick={downloadEncryptedFile}
+          disabled={loading}
+        >
+          {loading ? "Downloading..." : "Download"}
+        </button>
+        <button className="cancelButton" onClick={onClose}>
+          Cancel
+        </button>
+      </div>
+    </>
   );
 };
 

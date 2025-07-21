@@ -7,7 +7,7 @@ const archiver = require("archiver");
 const path = require("path");
 const fs = require("fs");
 
-const { encryptBuffer} = require("./encrypt/encryption.js");
+const { encryptBuffer } = require("./encrypt/encryption.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -94,6 +94,39 @@ app.get("/:linkId", (req, res) => {
 });
 
 app.post("/secureDownload", (req, res) => {
+  // const { linkId, password } = req.body;
+  // const fileTransfer = fileTransfers[linkId];
+
+  // if (!fileTransfer || Date.now() > fileTransfer.expirationTime) {
+  //   return res.status(400).json({ error: "Link expired or invalid." });
+  // }
+
+  // if (fileTransfer.password !== password) {
+  //   return res.status(403).json({ error: "Incorrect password" });
+  // }
+
+  // // Stream zip, then encrypt, then send to client
+  // const archive = archiver("zip", { store: true });
+  // const chunks = [];
+
+  // archive.on("data", (chunk) => chunks.push(chunk));
+
+  // archive.on("end", () => {
+  //   const zipBuffer = Buffer.concat(chunks);
+
+  //   // Encrypt the zip buffer before sending
+  //   const encryptedBuffer = encryptBuffer(zipBuffer, password);
+
+  //   res.setHeader("Content-Disposition", "attachment; filename=files.zip");
+  //   res.send(encryptedBuffer);
+  // });
+
+  // fileTransfer.files.forEach((f) => {
+  //   archive.file(f.path, { name: f.name });
+  // });
+
+  // archive.finalize();
+
   const { linkId, password } = req.body;
   const fileTransfer = fileTransfers[linkId];
 
@@ -105,7 +138,6 @@ app.post("/secureDownload", (req, res) => {
     return res.status(403).json({ error: "Incorrect password" });
   }
 
-  // Stream zip, then encrypt, then send to client
   const archive = archiver("zip", { store: true });
   const chunks = [];
 
@@ -114,10 +146,11 @@ app.post("/secureDownload", (req, res) => {
   archive.on("end", () => {
     const zipBuffer = Buffer.concat(chunks);
 
-    // Encrypt the zip buffer before sending
     const encryptedBuffer = encryptBuffer(zipBuffer, password);
 
-    res.setHeader("Content-Disposition", "attachment; filename=files.zip");
+    res.setHeader("Content-Disposition", "attachment; filename=files.enc");
+    res.setHeader("Content-Type", "application/octet-stream");
+
     res.send(encryptedBuffer);
   });
 
@@ -127,8 +160,6 @@ app.post("/secureDownload", (req, res) => {
 
   archive.finalize();
 });
-
-
 
 // Start the server
 const PORT = process.env.PORT || 9000;

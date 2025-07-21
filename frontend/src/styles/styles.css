@@ -231,57 +231,62 @@ button:focus-visible {
   background-color: #f4f4f4;
   transition: box-shadow 0.3s, background-color 0.3s;
   outline: none;
-  color: #333;           
-  caret-color: #666; 
-  margin-bottom: 5px;    
+  color: #333;
+  caret-color: #666;
+  margin-bottom: 15px;  
+  margin-top: 10px;
 }
 
 .password-input::placeholder {
-  color: #999;
+  color: #979090;
   font-weight: 500;
 }
 
 .password-input:focus {
   background-color: #e4e1e1;
-  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3); 
-}
-
-.password-input.filled {
-  background-color: #e9e1e1; 
-}
-
-
-.modal input[type="password"] {
-  width: 100%;
-  padding: 12px 16px;
-  font-size: 16px;
-  border: none;
-  border-radius: 12px;         
-  background-color: #f4f4f4;
-  color: #333;                  
-  caret-color: #666;           
-  transition: box-shadow 0.3s, background-color 0.3s;
-  outline: none;
-}
-
-.modal input[type="password"]::placeholder {
-  color: #999;                 
-  font-weight: 500;           
-}
-
-.modal input[type="password"]:focus {
-  background-color: #e4e1e1;
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
 }
 
-.modal input[type="password"].filled {
-  background-color: #e9e1e1;   
+.password-input.filled {
+  background-color: #e9e1e1;
 }
 
-.modal button[class="downloadButton"] {
-  margin-right:5px;
+h3{
+  font-size: 1.5rem;
+  color: #74c69d;
 }
 
-.modal button[class="cancelButton"] {
-  margin-left:5px;
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 4rem; 
 }
+
+.downloadButton,
+.cancelButton {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #4caf50; 
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.downloadButton:hover,
+.cancelButton:hover {
+  background-color: #45a049;
+}
+
+
+.downloadButton {
+  margin-right: 5px;
+}
+
+.cancelButton {
+  margin-left: 5px;
+}
+

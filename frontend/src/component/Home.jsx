@@ -4,7 +4,6 @@ import axios from "axios";
 import QRCode from "react-qr-code";
 import "../styles/styles.css";
 const apiBase = import.meta.env.VITE_API_URL;
-import DecryptFile from "./DecryptFile";
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -14,7 +13,6 @@ function App() {
 
   const [password, setPassword] = useState("");
   const [isEncrypted, setIsEncrypted] = useState(false);
-  const [showDecryptModal, setShowDecryptModal] = useState(false);
   const [originalLink, setOriginalLink] = useState("");
 
   const { shortenUrl, loading, error } = useUrlShortener();
@@ -22,23 +20,7 @@ function App() {
   const handleFileSelect = (e) => {
     setFiles([...e.target.files]);
   };
-
-  // const handleDownloadLink = async (link) => {
-  //   try {
-  //     const response = await axios.get(link);
-
-  //     if (response.data.isEncrypted) {
-  //       setIsEncrypted(true);
-  //       setShowDecryptModal(true);
-  //       setOriginalLink(link);
-  //     } else {
-  //       window.location.href = link;
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Link expired or invalid.");
-  //   }
-  // };
+  
 
   const generateShareableLink = async () => {
     if (files.length === 0) {
@@ -63,7 +45,6 @@ function App() {
 
       const { linkId, expirationTime, isEncrypted } = response.data;
 
-      // const longUrl = `${apiBase}/${linkId}`;
       const longUrl = `https://instant-share-black.vercel.app/download/${linkId}`;
       const shortUrl = await shortenUrl(longUrl);
 
@@ -123,16 +104,7 @@ function App() {
             </div>
             <div className="link-info">
               <h3>Share this link:</h3>
-              {/* <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleDownloadLink(originalLink);
-                }}
-              >
-                {shareableLink}
-              </a> */}
-
+            
               <a
                 href={`/download/${originalLink.split("/").pop()}`}
                 target="_blank"
@@ -152,13 +124,7 @@ function App() {
           </div>
         )}
       </div>
-
-      {/* {showDecryptModal && (
-        <DecryptFile
-          fileUrl={originalLink}
-          onClose={() => setShowDecryptModal(false)}
-        />
-      )} */}
+       {/*handled in GlobalDownload */}
     </div>
   );
 }
