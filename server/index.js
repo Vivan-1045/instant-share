@@ -117,7 +117,7 @@ app.post("/secureDownload", (req, res) => {
     // Encrypt the zip buffer before sending
     const encryptedBuffer = encryptBuffer(zipBuffer, password);
 
-    res.setHeader("Content-Disposition", "attachment; filename=files.enc");
+    res.setHeader("Content-Disposition", "attachment; filename=files.zip");
     res.send(encryptedBuffer);
   });
 
