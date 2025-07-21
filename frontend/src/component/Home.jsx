@@ -64,7 +64,7 @@ function App() {
       const { linkId, expirationTime, isEncrypted } = response.data;
 
       // const longUrl = `${apiBase}/${linkId}`;
-      const longUrl = `https://instant-share.vercel.app/download/${linkId}`;
+      const longUrl = `https://instant-share-black.vercel.app/download/${linkId}`;
       const shortUrl = await shortenUrl(longUrl);
 
       setOriginalLink(longUrl);
