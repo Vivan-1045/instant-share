@@ -1,30 +1,54 @@
 # 🚀 Instant Share 
 
 **Secure, anonymous, real-time file sharing — no login needed.**  
-Built with **React**, **Node.js**, **WebSocket**, **Express**, and **CryptoJS**.
+Built with **React**, **Node.js**, **WebSocket**, **Express**, and **CryptoJS/Node Crypto**.
 
-🔗[live here⬇️](https://instant-share-black.vercel.app/)
+🔗 [Live Demo ⬇️](https://instant-share-black.vercel.app/)
+
 ---
 
 ## 🔧 Features
 
-- 🔒 **End-to-End Security**: Optional password-protected encryption via **CryptoJS**
-- ⚡ **Real-Time Transfers**: Uses **WebSockets** for instant, peer-to-peer file sharing
-- 📱 **Quick Access**: Share files via **QR codes** or direct download links
-- 👤 **No Login Required**: 100% anonymous, temporary transfers
-- ⚙️ **Modern Stack**: Built with **React** (frontend), **Node.js + Express** (backend)
+- 🔒 **End-to-End Encryption (AES-256-CBC)**  
+  - Optional password protection  
+  - Dynamically generated **IV (Initialization Vector)** handled properly between backend and frontend for secure encryption/decryption
+- ⚡ **Real-Time Transfers**  
+  - Uses **WebSockets** for instant, peer-to-peer file sharing
+- 📱 **Quick Access**  
+  - Share files via **QR codes** or direct download links
+- 👤 **No Login Required**  
+  - 100% anonymous and temporary transfers
+- ⚙️ **Modern Stack**  
+  - Built with **React** (frontend) & **Node.js + Express** (backend)
+
+---
+
+## 🔐 **Security Update**
+
+**Previously:**  
+Encrypted file downloads failed because the IV (Initialization Vector) was generated dynamically on the backend but not passed correctly to the frontend during decryption.
+
+**Now:**  
+The IV is **prepended to the encrypted data** when sent to the client.  
+During decryption, the frontend **extracts the IV from the file**, ensuring correct AES-256-CBC decryption.
+
+This fixes issues with:
+
+- Encrypted downloads showing corrupted zip files  
+- Decryption failing due to IV mismatch
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology  | Role            |
-|-------------|-----------------|
-| React       | Frontend UI     |
-| Node.js     | Backend runtime |
-| Express     | Web server API  |
-| WebSocket   | Real-time comms |
-| CryptoJS    | File encryption |
+| Technology   | Role                   |
+|--------------|------------------------|
+| React        | Frontend UI            |
+| Node.js      | Backend runtime        |
+| Express      | Web server & APIs      |
+| WebSocket    | Real-time communication |
+| Node Crypto  | Backend encryption     |
+| CryptoJS     | Frontend decryption    |
 
 ---
 
