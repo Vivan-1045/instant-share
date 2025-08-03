@@ -7,6 +7,12 @@ const archiver = require("archiver");
 const path = require("path");
 const fs = require("fs");
 
+const VisitorRoute = require('./route/visitor');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db.js');
+dotenv.config();
+connectDB();
+
 const { encryptBuffer } = require("./encrypt/encryption.js");
 
 const app = express();
@@ -16,6 +22,7 @@ const server = http.createServer(app);
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "uploads")));
+app.use('/api/visitor', VisitorRoute);
 
 const upload = multer({
   storage: multer.diskStorage({

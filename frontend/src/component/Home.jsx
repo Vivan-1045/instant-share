@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import "../styles/styles.css";
+import VisitorCount from "./VisitorCount";
 const apiBase = import.meta.env.VITE_API_URL;
 
 function App() {
@@ -73,7 +74,7 @@ function App() {
   }, [expirationTime]);
 
   return (
-    <div className="container">
+    <><div className="container">
       <h1>Drop. Share. Done.</h1>
       <div className="main-layout">
         <div className="left-pane">
@@ -82,16 +83,14 @@ function App() {
             type="file"
             className={files.length > 0 ? "is_files" : ""}
             multiple
-            onChange={handleFileSelect}
-          />
+            onChange={handleFileSelect} />
 
           <input
             type="password"
             placeholder="If Confidential, enter a password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={`password-input ${password.length > 0 ? "filled" : ""}`}
-          />
+            className={`password-input ${password.length > 0 ? "filled" : ""}`} />
           <button onClick={generateShareableLink}>
             Generate Link & QR Code
           </button>
@@ -104,7 +103,7 @@ function App() {
             </div>
             <div className="link-info">
               <h3>Share this link:</h3>
-            
+
               <a
                 href={`/download/${originalLink.split("/").pop()}`}
                 target="_blank"
@@ -124,8 +123,10 @@ function App() {
           </div>
         )}
       </div>
-       {/*handled in GlobalDownload */}
-    </div>
+
+      {/*handled in GlobalDownload */}
+    </div> <div className="bottom-tag"><VisitorCount /></div></>
+    
   );
 }
 

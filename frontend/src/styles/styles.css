@@ -290,3 +290,33 @@ h3{
   margin-left: 5px;
 }
 
+
+.visitor {
+  margin-top: 2rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin: 1rem 0;
+  text-align: center;
+  background-color: #eaf6f6;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: inline-block;
+}
+
+.visitor-count {
+  font-weight: bold;
+  color: #00a676;
+  font-size: 1.2rem;
+  margin-left: 0.3rem;
+}
+
+.bottom-tag{
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+
+}
+
