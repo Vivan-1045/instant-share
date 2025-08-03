@@ -4,10 +4,10 @@ const Visitor = require('../model/Visitor');
 const crypto = require('crypto');
 
 router.get('/track',async (req,res) =>{
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const userAgent = req.headers['user-agent']
+    const ip = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || "").split(",")[0].trim();
+    const userAgent = req.headers['user-agent'] || "";
 
-    const hash = crypto.createHash('sha256').update(ip+userAgent).digest('hex');
+    const hash = crypto.createHash('sha256').update(ip + userAgent).digest('hex');
 
     try{
         const visitor = await Visitor.findOne({userAgentHash : hash});
