@@ -326,3 +326,55 @@ h3{
 
 }
 
+@media (max-width: 720px) {
+  .main-layout {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  .left-pane,
+  .right-pane {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .container {
+    max-height: none;
+    height: auto;
+    overflow-y: auto;
+    padding: 1.5rem;
+    box-shadow: none; 
+  }
+
+  body, html {
+    height: auto;
+    overflow-y: auto;
+    padding: 1rem;
+    align-items: flex-start;
+  }
+
+  button {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .qr-code-box {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .right-pane {
+    margin-bottom: 1.5rem;
+  }
+}
+
