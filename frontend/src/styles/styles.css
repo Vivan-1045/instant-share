@@ -12,7 +12,7 @@ body, html {
   background: linear-gradient(135deg, #a8edea, #fed6e3);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 2rem;
 }
 
@@ -65,6 +65,10 @@ h2 {
   align-items: stretch;
 }
 
+h2{
+  text-decoration: underline;
+}
+
 .left-pane input[type="file"] {
   padding: 1rem;
   border: 3px dashed #52b788;
@@ -74,6 +78,7 @@ h2 {
   transition: border-color 0.3s ease;
   background: #f0fdf4;
   margin-bottom: 1.5rem;
+  margin-top: 5px;
 }
 
 .left-pane input[type="file"]:hover,
@@ -85,7 +90,7 @@ h2 {
 
 /* Button */
 button {
-  margin-top: 5px;
+  margin-top: 15px;
   background-color: #40916c;
   color: #f0fdf4;
   font-weight: 700;
@@ -223,6 +228,7 @@ button:focus-visible {
 }
 
 .password-input {
+  height: 48px;
   width: 100%;
   padding: 12px 16px;
   font-size: 16px;
@@ -234,7 +240,7 @@ button:focus-visible {
   color: #333;
   caret-color: #666;
   margin-bottom: 15px;  
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .password-input::placeholder {
