@@ -18,7 +18,7 @@ function VisitorCount() {
   
   return (
      <p className="visitor">
-      ✅ Trusted by <span className="visitor-count">{count || "..."}+</span> users
+      Last visited <span className="visitor-count">{count || "..."}+</span> 
     </p>
   );
 }
