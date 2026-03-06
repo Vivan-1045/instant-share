@@ -15,6 +15,9 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
+//Runs in every one minute interval to clean up expired files from temp directory
+require("./utils/cleanUp");
+
 // Middleware
 app.use(cors());
 app.use(express.json());
