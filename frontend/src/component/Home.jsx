@@ -54,7 +54,11 @@ function App() {
       setExpirationTime(new Date(expirationTime));
       setIsEncrypted(isEncrypted);
     } catch (error) {
-      alert("Failed to generate the link. Please try again.");
+      if(error.response && error.response.data && error.response.data.error){
+        alert(error.response.data.error);
+      }else{
+        alert("Failed to generate link. Try again.");
+      }
     }
   };
 
