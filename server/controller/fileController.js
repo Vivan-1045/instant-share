@@ -23,7 +23,6 @@ exports.generateLink = (req, res) => {
     expirationTime,
   };
 
-  // Auto delete files after 2 minutes
   setTimeout(() => {
     const data = fileTransfers[linkId];
     if (data) {
