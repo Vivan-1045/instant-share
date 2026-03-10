@@ -28,6 +28,7 @@ function App() {
     for(let file of selectedFiles){
       if(file.size > totalSize){
         alert(`${file.name} exceeds the 100MB file size limit.`);
+        window.location.reload(); 
         return;
       }
       size += file.size;
@@ -35,6 +36,7 @@ function App() {
     
     if(size>totalSize){
       alert("Total file size exceeds 100MB limit.");
+      window.location.reload();
       return;
     }
     setFiles(selectedFiles);
