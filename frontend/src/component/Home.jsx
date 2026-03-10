@@ -18,8 +18,26 @@ function App() {
 
   const { shortenUrl, loading, error } = useUrlShortener();
 
+  const totalSize = 100*1024*1024;
+
   const handleFileSelect = (e) => {
-    setFiles([...e.target.files]);
+
+    const selectedFiles = [...e.target.files];
+    let size  = 0;
+
+    for(let file of selectedFiles){
+      if(file.size > totalSize){
+        alert(`${file.name} exceeds the 100MB file size limit.`);
+        return;
+      }
+      size += file.size;
+    }
+    
+    if(size>totalSize){
+      alert("Total file size exceeds 100MB limit.");
+      return;
+    }
+    setFiles(selectedFiles);
   };
   
 
