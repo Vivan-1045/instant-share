@@ -1,61 +1,91 @@
-# 🚀 Instant Share 
+# 🚀 Instant Share
 
-**Secure, anonymous, real-time file sharing — no login needed.**  
-Built with **React**, **Node.js**, **WebSocket**, **Express**, and **CryptoJS/Node Crypto**.
+**Secure, anonymous file sharing — no login required.**
 
-🔗 [Live Demo ⬇️](https://instant-share-black.vercel.app/)
-
----
-
-## 🔧 Features
-
-- 🔒 **End-to-End Encryption (AES-256-CBC)**  
-  - Optional password protection  
-  - Dynamically generated **IV (Initialization Vector)** handled properly between backend and frontend for secure encryption/decryption
-- ⚡ **Real-Time Transfers**  
-  - Uses **WebSockets** for instant, peer-to-peer file sharing
-- 📱 **Quick Access**  
-  - Share files via **QR codes** or direct download links
-- 👤 **No Login Required**  
-  - 100% anonymous and temporary transfers
-- ⚙️ **Modern Stack**  
-  - Built with **React** (frontend) & **Node.js + Express** (backend)
+Instant Share allows you to transfer files securely from your browser with end-to-end encryption, password protection, and simple sharing via links or QR codes.
 
 ---
 
-## 🔐 **Security Update**
+## 🔗 Live Demo
 
-**Previously:**  
-Encrypted file downloads failed because the IV (Initialization Vector) was generated dynamically on the backend but not passed correctly to the frontend during decryption.
+👉 https://instant-share-black.vercel.app
 
-**Now:**  
-The IV is **prepended to the encrypted data** when sent to the client.  
-During decryption, the frontend **extracts the IV from the file**, ensuring correct AES-256-CBC decryption.
+---
 
-This fixes issues with:
+## ✨ Features
 
-- Encrypted downloads showing corrupted zip files  
-- Decryption failing due to IV mismatch
+### 🔒 End-to-End Encryption
+- Uses **AES-256-CBC**
+- Optional **password protection**
+- Secure **IV (Initialization Vector)** handling for reliable encryption/decryption
+
+---
+
+### ⚡ Fast File Transfers
+- Efficient client-server file transfer
+- Optimized for quick uploads and downloads
+
+---
+
+### 📱 Easy Sharing
+- Share files via:
+  - QR codes  
+  - Direct download links  
+
+---
+
+### 👤 100% Anonymous
+- No login required  
+- Privacy-focused temporary sharing  
+
+---
+
+### ⚙️ Modern Tech Stack
+- **Frontend:** React  
+- **Backend:** Node.js + Express  
+- **Encryption:** Node Crypto + CryptoJS  
+
+---
+
+## 🔐 Security Fix (Important)
+
+### 🐞 Previous Issue
+Encrypted downloads failed because:
+- IV was generated on the backend  
+- But not properly shared with the frontend  
+
+This caused:
+- Corrupted files  
+- Failed decryption  
+
+---
+
+### ✅ Fix Implemented
+- IV is now **prepended to encrypted data**
+- Frontend **extracts IV before decryption**
+
+✔ Correct AES-256-CBC decryption  
+✔ No more corrupted downloads  
+✔ Consistent encryption flow  
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology   | Role                   |
-|--------------|------------------------|
-| React        | Frontend UI            |
-| Node.js      | Backend runtime        |
-| Express      | Web server & APIs      |
-| WebSocket    | Real-time communication |
-| Node Crypto  | Backend encryption     |
-| CryptoJS     | Frontend decryption    |
+| Technology   | Role                    |
+|-------------|-------------------------|
+| React       | Frontend UI             |
+| Node.js     | Backend runtime         |
+| Express     | API server              |
+| Node Crypto | Backend encryption      |
+| CryptoJS    | Frontend decryption     |
 
 ---
 
-## 🖥️ Installation
+## 📦 Installation
 
+### 1. Clone the Repository
 ```bash
-# Clone the repository
 git clone https://github.com/Vivan-1045/instant-share.git
 cd instant-share
 
