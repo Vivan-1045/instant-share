@@ -21,7 +21,7 @@ const DecryptFile = ({ fileUrl, onClose }) => {
         },
         {
           responseType: "arraybuffer",
-        }
+        },
       );
 
       const encryptedData = new Uint8Array(response.data);
@@ -39,14 +39,14 @@ const DecryptFile = ({ fileUrl, onClose }) => {
         keyBuffer,
         { name: "AES-CBC" },
         false,
-        ["decrypt"]
+        ["decrypt"],
       );
 
       // Decrypt
       const decryptedArrayBuffer = await crypto.subtle.decrypt(
         { name: "AES-CBC", iv: iv },
         cryptoKey,
-        ciphertext
+        ciphertext,
       );
 
       const blob = new Blob([decryptedArrayBuffer], {
@@ -73,14 +73,14 @@ const DecryptFile = ({ fileUrl, onClose }) => {
           alert("Incorrect password.");
         } else if (status === 400) {
           alert(data.error || "Link expired or invalid.");
+        } else if (status === 429) {
+          alert("Too many password attempts. Please try again later.");
         } else {
           alert("Download failed.");
         }
       } else {
         alert("Network error or server unreachable.");
       }
-
-      console.error(err);
     }
   };
 
@@ -93,8 +93,7 @@ const DecryptFile = ({ fileUrl, onClose }) => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={`password-input ${password ? "filled" : ""}`
-          }
+          className={`password-input ${password ? "filled" : ""}`}
         />
       </div>
       <div className="button-group">

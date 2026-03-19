@@ -10,6 +10,8 @@ const {
   secureDownload,
 } = require("../controller/fileController");
 
+const { uploadLimiter , passwordLimiter} = require("../utils/rateLimiter")
+
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
@@ -29,7 +31,7 @@ const upload = multer({
 
 //Generate Link Route
 // router.post("/generateLink", upload.array("files"),generateLink);
-router.post("/generateLink", (req, res) => {
+router.post("/generateLink", uploadLimiter, (req, res) => {
   upload.array("files")(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       if (err.code === "LIMIT_FILE_SIZE") {
@@ -63,6 +65,6 @@ router.post("/generateLink", (req, res) => {
 router.get("/:linkId", getFileByLink);
 
 //Handle Encrypted Download
-router.post("/secureDownload", secureDownload);
+router.post("/secureDownload",passwordLimiter,secureDownload);
 
 module.exports = router;
